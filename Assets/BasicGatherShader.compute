@@ -1,0 +1,44 @@
+﻿
+#pragma kernel CSMain
+ 
+// values to add
+RWStructuredBuffer<float4> floatBuffer;
+
+// out value
+RWStructuredBuffer<float4> gatherBuffer;
+
+
+
+// immulated local atomics cant work in if / for
+// because of frozen threads
+//	  float acc = 0.0f;
+
+//	  GroupMemoryBarrierWithGroupSync();
+#define NR_THREADS 256
+
+#include "Chunks/interlockedAddFunctions.cginc"
+//#include "Chunks/interlockedClosestLength.cginc"
+
+
+[numthreads(NR_THREADS,1,1)]
+void CSMain (uint threadID : SV_GroupIndex, uint3 u3GroupID : SV_GroupID, uint3 id : SV_DispatchThreadID) {
+  
+  resetValue( threadID );
+  //int pID = id.x + id.y * gridX + id.z * gridX * gridY;
+
+  int pID = threadID;
+
+
+  //interlockedAddFloat4( floatBuffer[threadID] , threadID );
+
+  float2 value = floatBuffer[threadID].xy;
+
+  if( length( value ) == 0 ){ value = float2(1000000,100000); }
+  interlockedClosestLength( value , threadID);
+
+  if( threadID == 0 ){
+  	gatherBuffer[ 0 ] = interlockedFullValue;
+  }
+
+
+}
