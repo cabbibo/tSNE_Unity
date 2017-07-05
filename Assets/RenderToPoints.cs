@@ -5,10 +5,13 @@ using UnityEngine;
 public class RenderToPoints : MonoBehaviour {
 
 
+   
+
 
 	public Material m;
 	public csvToBuffer  vBuf;
 	public pointBufferUpdater updater;
+
 
 	// Use this for initialization
 	void Start () {

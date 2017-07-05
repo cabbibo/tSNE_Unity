@@ -18,6 +18,9 @@ public class switchTargetBuffer : MonoBehaviour {
     EventManager.OnTouchpadUp += OnTouchpadUp;
     EventManager.StayTouchpad += StayTouchpad;
 
+
+        OnTouchpadDown(gameObject);
+
    
 
 	}

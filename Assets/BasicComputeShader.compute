@@ -25,6 +25,11 @@ RWStructuredBuffer<Vert> targetBuffer;
 RWStructuredBuffer<float4> outBuffer;
 
 
+float4x4 transform;
+float4x4 antiTransform;
+float4x4 largeTransform;
+
+
 
 #define NR_THREADS 256
 
@@ -41,8 +46,8 @@ void CSMain (uint threadID : SV_GroupIndex, uint3 u3GroupID : SV_GroupID, uint3 
   Vert vert = vertBuffer[pID];
 
 
-
- float3 dif = vert.pos - _SelectorPosition;
+  
+  float3 dif = vert.pos - _SelectorPosition;
  float difL = length( dif );
   float2 closestVert = float2( difL , vert.id );
   interlockedClosestLength( closestVert , threadID );
@@ -54,14 +59,14 @@ void CSMain (uint threadID : SV_GroupIndex, uint3 u3GroupID : SV_GroupID, uint3 
 
   if( _ClosestID == vert.id ){
     vert.debug.x = 1;
-    force -= dif * 10 * _SelectorDown;
+    //force -= dif * 10 * _SelectorDown;
   }else{
     
-    force += .00001 * normalize( dif ) / (difL* difL);
+    //force += .00001 * normalize( dif ) / (difL* difL);
 
     if( _HasTarget ==1 ){
       Vert target = targetBuffer[ pID ];
-      force += springForce( vert.pos , target.pos , 0.0) * 20.1;
+      force += springForce( vert.pos , mul(transform , float4(target.pos,1)).xyz , 0.0) * 20.1;
     }
  
   }

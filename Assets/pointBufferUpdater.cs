@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class pointBufferUpdater : MonoBehaviour {
 
+    public Transform large;
+
 	public csvToBuffer vertBuffer;
 	public csvToBuffer targetBuffer;
 	public ComputeShader physics;
 	public ComputeShader gather;
+    
 
 	public GameObject Selector;
 	public controllerInfo Hand;
@@ -71,11 +74,49 @@ public void SetTargetBuffer(csvToBuffer buffer){
 
 		if( ready == true ){
 
-			physics.SetFloat( "_DeltaTime"    , Time.deltaTime );
-	    physics.SetFloat( "_Time"         , Time.time      );
-	    physics.SetFloat( "_ClosestID"         , values[1]     );
-	    physics.SetFloat( "_SelectorDown"      , Hand.triggerVal     );
-	    physics.SetVector( "_SelectorPosition" , Selector.transform.position      );
+            Matrix4x4 matrix;
+            float[] matrixFloats;
+            matrix = transform.localToWorldMatrix;
+            matrixFloats = new float[]
+            {
+                matrix[0,0], matrix[1, 0], matrix[2, 0], matrix[3, 0],
+                matrix[0,1], matrix[1, 1], matrix[2, 1], matrix[3, 1],
+                matrix[0,2], matrix[1, 2], matrix[2, 2], matrix[3, 2],
+                matrix[0,3], matrix[1, 3], matrix[2, 3], matrix[3, 3]
+            };
+
+            physics.SetFloats("transform", matrixFloats);
+
+            matrix = transform.localToWorldMatrix;
+            matrixFloats = new float[]
+            {
+                matrix[0,0], matrix[1, 0], matrix[2, 0], matrix[3, 0],
+                matrix[0,1], matrix[1, 1], matrix[2, 1], matrix[3, 1],
+                matrix[0,2], matrix[1, 2], matrix[2, 2], matrix[3, 2],
+                matrix[0,3], matrix[1, 3], matrix[2, 3], matrix[3, 3]
+            };
+
+            physics.SetFloats("antiTransform", matrixFloats);
+           
+
+
+            matrix = large.localToWorldMatrix;
+            matrixFloats = new float[]
+            {
+                matrix[0,0], matrix[1, 0], matrix[2, 0], matrix[3, 0],
+                matrix[0,1], matrix[1, 1], matrix[2, 1], matrix[3, 1],
+                matrix[0,2], matrix[1, 2], matrix[2, 2], matrix[3, 2],
+                matrix[0,3], matrix[1, 3], matrix[2, 3], matrix[3, 3]
+            };
+
+            physics.SetFloats("largeTransform", matrixFloats);
+
+
+            physics.SetFloat( "_DeltaTime"    , Time.deltaTime );
+	        physics.SetFloat( "_Time"         , Time.time      );
+	        physics.SetFloat( "_ClosestID"         , values[1]     );
+	        physics.SetFloat( "_SelectorDown"      , Hand.triggerVal     );
+	        physics.SetVector( "_SelectorPosition" , Selector.transform.position      );
 
 			physics.SetBuffer( _kernel , "vertBuffer" , vertBuffer._buffer );
 			

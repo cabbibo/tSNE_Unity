@@ -105,7 +105,7 @@ uniform float _ClosestID;
         float3 tCol = tex2D(_Texture, float2( v.uv)).xyz;
       	float3 col =  tCol * v.debug;//float3(v.uv.x , v.uv.y , 0);//v.debug;
 
-        return float4( col , .5 );
+        return float4( col , 1.5 );
 
 
       }
