@@ -40,6 +40,8 @@ public class tSNEAudio : MonoBehaviour {
 		int whichClip = id / 4429;
 		int remain = id - whichClip * 4429;
 
+
+        print(whichClip);
 		AudioClip c = clips[ whichClip ];
 
 

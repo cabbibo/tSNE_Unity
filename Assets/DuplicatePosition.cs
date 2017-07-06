@@ -14,7 +14,7 @@ public class DuplicatePosition : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        transform.position = toDuplicate.transform.position * transform.localScale.x;
+        transform.position = (toDuplicate.transform.position / toDuplicate.transform.localScale.x) * transform.localScale.x;
 		
 	}
 }

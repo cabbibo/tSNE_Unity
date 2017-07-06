@@ -66,7 +66,8 @@ void CSMain (uint threadID : SV_GroupIndex, uint3 u3GroupID : SV_GroupID, uint3 
 
     if( _HasTarget ==1 ){
       Vert target = targetBuffer[ pID ];
-      force += springForce( vert.pos , mul(transform , float4(target.pos,1)).xyz , 0.0) * 20.1;
+	  float mass = hash(vert.id);
+      force += springForce( vert.pos , mul(transform , float4(target.pos,1)).xyz , 0.0) * 4.1 * (mass+4);
     }
  
   }
@@ -78,7 +79,7 @@ void CSMain (uint threadID : SV_GroupIndex, uint3 u3GroupID : SV_GroupID, uint3 
   if( length( vert.vel) > 1 ){ vert.vel = normalize( vert.vel ) * 1;}
   vert.pos += vert.vel;
 
-  vert.vel *= .8;
+  vert.vel *= .5;
 
   if( _ClosestID == vert.id ){
   	vert.debug.x = 1;

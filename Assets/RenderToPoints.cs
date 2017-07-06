@@ -5,7 +5,7 @@ using UnityEngine;
 public class RenderToPoints : MonoBehaviour {
 
 
-   
+    public bool active;
 
 
 	public Material m;
@@ -39,9 +39,10 @@ public class RenderToPoints : MonoBehaviour {
 			if( updater.ready == true ){
 				m.SetFloat( "_ClosestID" , updater.values[1] );
 			}
-
-			//Graphics.DrawProcedural(MeshTopology.Points, vBuf.vertCount );
-			Graphics.DrawProcedural(MeshTopology.Triangles, vBuf.vertCount * 6 );
+            if( active == true) { m.SetFloat("_Active", 1); }
+            if (active == false) { m.SetFloat("_Active", 0); }
+            //Graphics.DrawProcedural(MeshTopology.Points, vBuf.vertCount );
+            Graphics.DrawProcedural(MeshTopology.Triangles, vBuf.vertCount * 6 );
 		}
 
 

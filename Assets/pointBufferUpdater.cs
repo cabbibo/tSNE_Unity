@@ -10,6 +10,8 @@ public class pointBufferUpdater : MonoBehaviour {
 	public csvToBuffer targetBuffer;
 	public ComputeShader physics;
 	public ComputeShader gather;
+
+    public switchTargetBuffer AllBuffers;
     
 
 	public GameObject Selector;
@@ -38,7 +40,10 @@ public class pointBufferUpdater : MonoBehaviour {
 		vertBuffer.Live();
 		WhenBufferReady();
 
-	}
+
+        
+
+    }
 
 		// Use this for initialization
 	public void WhenBufferReady() {
@@ -64,10 +69,10 @@ public class pointBufferUpdater : MonoBehaviour {
 		
 	}
 
-public void SetTargetBuffer(csvToBuffer buffer){
+    public void SetTargetBuffer(csvToBuffer buffer){
 
-	targetBuffer = buffer;
-}
+	    targetBuffer = buffer;
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {

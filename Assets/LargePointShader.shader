@@ -27,6 +27,7 @@
 
 
 			uniform sampler2D _Texture;
+		uniform float _Active;
 
 
 		struct Vert {
@@ -76,7 +77,7 @@
 
 			o.debug = float3(.3,0,0);
 			float size = .003;
-			size = .13 * (max(v.debug.x - .5,0) + .1);
+			size = .33 * (max(v.debug.x - .5,0) + .1);
 			if (v.id == _ClosestID) {
 				o.debug = float3(1,1,0);
 
@@ -108,9 +109,9 @@
 		float4 frag(varyings v) : COLOR{
 
 			float3 tCol = tex2D(_Texture, float2(v.uv)).xyz;
-			float3 col = tCol * v.debug;//float3(v.uv.x , v.uv.y , 0);//v.debug;
+			float3 col = tCol * ((v.debug * _Active) + (float3(.4,.4,.4) * (1-_Active)));//float3(v.uv.x , v.uv.y , 0);//v.debug;
 
-			return float4(col , .5);
+			return float4(col * (1+_Active), .3 + 2 * _Active);
 
 
 		}

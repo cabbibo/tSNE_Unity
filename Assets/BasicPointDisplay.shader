@@ -27,6 +27,8 @@ Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"
 
 
 uniform sampler2D _Texture;
+	uniform float _Active;
+	uniform float3 _SelectorPos;
 
 
 struct Vert{
@@ -103,9 +105,9 @@ uniform float _ClosestID;
       float4 frag (varyings v) : COLOR {
 
         float3 tCol = tex2D(_Texture, float2( v.uv)).xyz;
-      	float3 col =  tCol * v.debug;//float3(v.uv.x , v.uv.y , 0);//v.debug;
+      	float3 col = tCol * ((v.debug * _Active) + (float3(.4, .4, .4) * (1 - _Active)));//float3(v.uv.x , v.uv.y , 0);//v.debug;
 
-        return float4( col , 1.5 );
+        return float4(col * (1 + _Active), .3 + 2 * _Active);;
 
 
       }

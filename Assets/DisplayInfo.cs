@@ -5,6 +5,7 @@ using UnityEngine;
 public class DisplayInfo : MonoBehaviour {
 
 	public TextAsset asset;
+    public GameObject empty;
 
     public TextMesh text;
     public TextMesh bigTitle;
@@ -12,6 +13,8 @@ public class DisplayInfo : MonoBehaviour {
     private float oldID=100000000;
 
     public pointBufferUpdater updater;
+    public GameObject selectorSet;
+    public GameObject Selector;
 
     public Info[] FullInfo;
 
@@ -108,10 +111,14 @@ string fixJson(string value)
 
     void OnTriggerDown( GameObject g ){
         text.gameObject.GetComponent<MeshRenderer>().enabled = true;
+        selectorSet.GetComponent<RenderClosest>().enabled = true;
+        selectorSet.GetComponent<pointBufferUpdater>().Selector = Selector;
     }
 
     void OnTriggerUp( GameObject g ){
         text.gameObject.GetComponent<MeshRenderer>().enabled = false;
+        selectorSet.GetComponent<RenderClosest>().enabled = false;
+        selectorSet.GetComponent<pointBufferUpdater>().Selector = empty;
     }
 	
 	// Update is called once per frame
@@ -126,6 +133,7 @@ string fixJson(string value)
 	}
 
     void switchText( int id ){
+        print(id);
         text.text = FullInfo[id].name;
         bigTitle.text = FullInfo[id].name;
     }

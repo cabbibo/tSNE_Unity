@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class switchTargetBuffer : MonoBehaviour {
 
-	public pointBufferUpdater points;
+	public pointBufferUpdater[] points;
 	public createCSVBuffers buffers;
 
 	public int currentID = 1;
@@ -12,7 +12,7 @@ public class switchTargetBuffer : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
 
     EventManager.OnTouchpadDown += OnTouchpadDown;
     EventManager.OnTouchpadUp += OnTouchpadUp;
@@ -20,6 +20,7 @@ public class switchTargetBuffer : MonoBehaviour {
 
 
         OnTouchpadDown(gameObject);
+
 
    
 
@@ -44,7 +45,12 @@ public class switchTargetBuffer : MonoBehaviour {
 
 
 		currentID = id;
-		points.SetTargetBuffer(buffers.buffers[id]);
+
+
+        for (int i = 0; i < points.Length; i++)
+        {
+            points[i].SetTargetBuffer(buffers.buffers[id]);
+        }
 
 		print( buffers.titles[id]);
 		text.text = buffers.titles[id];
