@@ -65,6 +65,8 @@ public class pointBufferUpdater : MonoBehaviour {
 
 		ready = true;
 
+        if (!targetBuffer) { targetBuffer = vertBuffer; }
+
 	   	//physics.Dispatch( _kernel, vertBuffer.SIZE , vertBuffer.SIZE , vertBuffer.SIZE );
 		
 	}
@@ -102,19 +104,21 @@ public class pointBufferUpdater : MonoBehaviour {
             };
 
             physics.SetFloats("antiTransform", matrixFloats);
-           
 
 
-            matrix = large.localToWorldMatrix;
-            matrixFloats = new float[]
+            if (large)
             {
+                matrix = large.localToWorldMatrix;
+                matrixFloats = new float[]
+                {
                 matrix[0,0], matrix[1, 0], matrix[2, 0], matrix[3, 0],
                 matrix[0,1], matrix[1, 1], matrix[2, 1], matrix[3, 1],
                 matrix[0,2], matrix[1, 2], matrix[2, 2], matrix[3, 2],
                 matrix[0,3], matrix[1, 3], matrix[2, 3], matrix[3, 3]
-            };
+                };
 
-            physics.SetFloats("largeTransform", matrixFloats);
+                physics.SetFloats("largeTransform", matrixFloats);
+            }
 
 
             physics.SetFloat( "_DeltaTime"    , Time.deltaTime );
@@ -126,6 +130,7 @@ public class pointBufferUpdater : MonoBehaviour {
 			physics.SetBuffer( _kernel , "vertBuffer" , vertBuffer._buffer );
 			
 			if( targetBuffer != null ){
+                //print("targets");
 				physics.SetBuffer( _kernel , "targetBuffer" , targetBuffer._buffer );
 				physics.SetInt( "_HasTarget" , 1 );
 			}else{

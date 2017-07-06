@@ -77,13 +77,13 @@ public class SwitchOnOffCube : MonoBehaviour {
     {
         print("helllo");
         inside = true;
-        transform.localScale *= 2;
+        transform.localScale *= 5;
     }
 
     void OnTriggerExit(Collider o)
     {
         inside = false;
-        transform.localScale /= 2;
+        transform.localScale /= 5;
     }
 
     void OnTriggerDown( GameObject t)

@@ -1,0 +1,111 @@
+﻿#pragma kernel CSMain
+
+struct Vert {
+	float id;
+	float3 pos;
+	float3 vel;
+	float3 targetPos;
+	float3 debug;
+};
+
+
+float3 _SelectorPosition;
+float _SelectorDown;
+float _ClosestID;
+float _DeltaTime;
+int _HasTarget;
+
+#include "Chunks/noise.cginc"
+#include "Chunks/springForce.cginc"
+
+
+RWStructuredBuffer<Vert> vertBuffer;
+RWStructuredBuffer<Vert> targetBuffer;
+
+RWStructuredBuffer<float4> outBuffer;
+
+
+float4x4 transform;
+float4x4 antiTransform;
+float4x4 largeTransform;
+
+
+
+#define NR_THREADS 256
+
+#include "Chunks/interlockedAddFunctions.cginc"
+
+
+[numthreads(NR_THREADS, 1, 1)]
+void CSMain(uint threadID : SV_GroupIndex, uint3 u3GroupID : SV_GroupID, uint3 id : SV_DispatchThreadID) {
+
+
+	resetValue(threadID);
+
+	int pID = threadID + u3GroupID * NR_THREADS;
+	Vert vert = vertBuffer[pID];
+
+
+
+	float3 dif = vert.pos - _SelectorPosition;
+	float difL = length(dif);
+	float2 closestVert = float2(difL, vert.id);
+	interlockedClosestLength(closestVert, threadID);
+
+	float3 force = float3(0, 0, 0);
+
+
+
+
+	if (_ClosestID == vert.id) {
+		vert.debug.x = 1;
+		force -= dif * 10 * _SelectorDown;
+	}
+	else {
+
+		force += .000001 * normalize( dif ) / (difL* difL);
+
+		if (_HasTarget == 1) {
+			Vert target = targetBuffer[pID];
+			float mass = hash(vert.id);
+			force += springForce(vert.pos, mul(transform, float4(vert.targetPos, 1)).xyz, 0.0);// *4.1 * (mass + 4);
+		}
+
+	}
+
+	force += 10 * springForce(vert.pos, mul(transform, float4(vert.targetPos, 1)).xyz, 0.0);// *4.1 * (mass + 4);
+	//vert.debug.x = max(vert.debug.x - .01, 0);
+
+
+	vert.vel += force * _DeltaTime;
+	if (length(vert.vel) > 1) { vert.vel = normalize(vert.vel) * 1; }
+	vert.pos += vert.vel;
+
+	vert.vel *= .9;
+
+	if (_ClosestID == vert.id) {
+		//vert.debug.x = 1;
+	}
+
+
+	if (difL  < .1) {
+		//vert.debug.y = difL * 4;
+	}
+	Vert target = targetBuffer[pID];
+	//vert.pos = mul(transform, float4(vert.targetPos, 1)).xyz;
+
+	vert.debug.x = 1;
+	vert.debug.y = 1;
+
+
+	if (threadID == 0) {
+		//interlockedFullValue.zw = closestID;
+		outBuffer[u3GroupID.x] = interlockedFullValue;
+	}
+
+	vertBuffer[pID] = vert;
+
+
+
+
+}
