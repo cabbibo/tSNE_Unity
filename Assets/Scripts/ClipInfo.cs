@@ -24,6 +24,13 @@ public class ClipInfo : MonoBehaviour {
     public TextMesh dateMesh;
     public TextMesh tagMesh;
 
+
+    public Renderer titleRenderer;
+	public Renderer userRenderer;
+    public Renderer descriptionRenderer;
+    public Renderer dateRenderer;
+    public Renderer tagRenderer;
+
     public Vector3 ogPos;
 
     public AudioSource source;
@@ -33,6 +40,8 @@ public class ClipInfo : MonoBehaviour {
     private float timeSinceLastPlayed = 0;
     private bool playing = false;
 
+
+    private GameObject insideObj;
     private Material mat;
     void WhileSliderXYPushed( GameObject b , Vector2 value ){
 
@@ -59,6 +68,13 @@ public class ClipInfo : MonoBehaviour {
         dateMesh.text = date;
         //tagMesh.text = tags[0];
 
+
+        if( insideObj != null ){
+			mat.SetVector( "_HitPosition" , insideObj.transform.position );
+		}
+
+		mat.SetFloat( "_FullTime" , Time.time);
+
 		transform.LookAt( eye.transform.position );
 
 		if( playing == true){
@@ -84,24 +100,54 @@ public class ClipInfo : MonoBehaviour {
     void OnTriggerEnter( Collider C)
     {
         Toggle(); Play(); //transform.position = ogPos; GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+        if( C.gameObject.GetComponent<SteamVR_TrackedObject>() != null ){
+        	var tObj =  C.gameObject.GetComponent<SteamVR_TrackedObject>();
+		      var device = SteamVR_Controller.Input((int)tObj.index);
+		      //var v = triggerVal * triggerVal * triggerVal * 200;
+		      device.TriggerHapticPulse((ushort)3000);
+		}
+
+		mat.SetFloat( "_HitTime" , Time.time);
+    	//titleRenderer.enabled = true;
+		//userRenderer.enabled = true;
+    	//descriptionRenderer.enabled = true;
+    	//dateRenderer.enabled = true;
+    	//tagRenderer.enabled = true;
+
+    	insideObj = C.gameObject;
+    }
+
+    void OnTriggerExit( Collider C)
+    {
+    	//titleRenderer.enabled = false;
+		//userRenderer.enabled = false;
+    	//descriptionRenderer.enabled = false;
+    	//dateRenderer.enabled = false;
+    	//tagRenderer.enabled = false;
+
+    	insideObj = null;
+       
     }
 
     void OnCollisionEnter( Collision c)
     {
+
+
         //Toggle(); Play(); //transform.position = ogPos; GetComponent<Rigidbody>().velocity = Vector3.zero;
 
     }
 
     void Toggle(){
 
-    	if( playing == true ){
+    	/*if( playing == true ){
     		mat.SetColor("_Color", Color.red);
     		playing = false;
     	}else{
     		mat.SetColor("_Color", Color.green);
     		playing = true;
     		timeSinceLastPlayed = 0;
-    	}
+    	}*/
 
     }
 }

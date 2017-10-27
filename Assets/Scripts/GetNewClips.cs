@@ -10,6 +10,7 @@ public class GetNewClips : MonoBehaviour {
 	public GameObject clipPrefab;
     public tSNEAudio audio;
 
+    public GameObject selectHand;
     public Transform largeSpace;
 
 	public GameObject[] clips;
@@ -17,16 +18,25 @@ public class GetNewClips : MonoBehaviour {
 	public int currentClip = 0;
 
     public bool active = false;
+    private float oLength = 0;
 
+    public AudioClip onClip;
+    public AudioClip offClip;
+
+    private AudioSource audioOnOff;
+    private MeshRenderer mesh;
 	// Use this for initialization
 	void Start () {
 		EventManager.OnTriggerUp += OnTriggerUp;
 		clips = new GameObject[ maxClips ];
-    //EventManager.OnTriggerUp += OnTriggerUp;
+
+        mesh = GetComponent<MeshRenderer>();    //EventManager.OnTriggerUp += OnTriggerUp;
+        audioOnOff = GetComponent<AudioSource>();
 	}
 
 	void OnTriggerUp( GameObject g ){
 
+        if( g == selectHand ){
 
         float length = updater.values[0];
         if (active == true && length < .1f)
@@ -69,11 +79,37 @@ public class GetNewClips : MonoBehaviour {
             currentClip %= maxClips;
             
         }
+    }
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        float length = updater.values[0];
+        if (active == true && length < .1f){
+            mesh.enabled = true;
+            transform.position = Selector.transform.position;
+        }else{
+            mesh.enabled = false;
+        }
+mesh.material.SetFloat( "_FullTime" , Time.time );
+        if( length < .1f && oLength >= .1f ){
+            //audioOnOff.clip = onClip;
+            //audioOnOff.Play();
+
+            mesh.material.SetFloat( "_HitTime" , Time.time );
+
+        }else if( oLength < .1f && length >= .1f  ){
+
+           //audioOnOff.clip = offClip;
+           //audioOnOff.Play();
+
+            mesh.material.SetFloat( "_HitTime" , Time.time );
+        }
+
+        oLength = length;
+
 		
 	}
 }

@@ -18,6 +18,8 @@ public class DisplayInfo : MonoBehaviour {
 
     public Info[] FullInfo;
 
+    public GameObject selectHand;
+
 
 [System.Serializable]
 public class Info
@@ -106,19 +108,29 @@ string fixJson(string value)
 
         EventManager.OnTriggerDown += OnTriggerDown;
         EventManager.OnTriggerUp += OnTriggerUp;
+
+         text.gameObject.GetComponent<MeshRenderer>().enabled = false;
+        selectorSet.GetComponent<RenderClosest>().enabled = false;
+        selectorSet.GetComponent<pointBufferUpdater>().Selector = empty;
 		
 	}
 
     void OnTriggerDown( GameObject g ){
+
+        if( selectHand == g ){
         text.gameObject.GetComponent<MeshRenderer>().enabled = true;
         selectorSet.GetComponent<RenderClosest>().enabled = true;
         selectorSet.GetComponent<pointBufferUpdater>().Selector = Selector;
     }
 
+    }
+
     void OnTriggerUp( GameObject g ){
+        if( selectHand == g ){
         text.gameObject.GetComponent<MeshRenderer>().enabled = false;
         selectorSet.GetComponent<RenderClosest>().enabled = false;
         selectorSet.GetComponent<pointBufferUpdater>().Selector = empty;
+        }
     }
 	
 	// Update is called once per frame

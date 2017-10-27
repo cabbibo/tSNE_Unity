@@ -60,6 +60,7 @@
      <None Include="Assets\Gooui\Resources\shaders\Slider.shader" />
      <None Include="Assets\Resources\BasicStarDisplay.shader" />
      <None Include="Assets\Resources\Chunks\triForce.cginc" />
+     <None Include="Assets\Shaders\CutoffBasic.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_Fade.shader" />
      <None Include="Assets\Resources\Chunks\hash.cginc" />
      <None Include="Assets\Resources\Chunks\DreamVertStruct.cginc" />
@@ -67,12 +68,14 @@
      <None Include="Assets\Resources\BasicPointDisplay.shader" />
      <None Include="Assets\SteamVR\InteractionSystem\Hints\Shaders\ControllerButtonHints.shader" />
      <None Include="Assets\Resources\Chunks\snoise.cginc" />
+     <None Include="Assets\Shaders\DepthNoiseNeow.shader" />
      <None Include="Assets\Resources\Chunks\AnchorStruct.cginc" />
      <None Include="Assets\Gooui\Resources\shaders\XYSlider.shader" />
      <None Include="Assets\Resources\Chunks\springForce.cginc" />
      <None Include="Assets\Resources\BasicStarCompute.compute" />
      <None Include="Assets\SteamVR\InteractionSystem\Teleport\Shaders\Highlight.shader" />
      <None Include="Assets\Gooui\Resources\shaders\Button.shader" />
+     <None Include="Assets\Shaders\DepthCol.shader" />
      <None Include="Assets\Resources\Chunks\humanStruct.cginc" />
      <None Include="Assets\Resources\Chunks\interlockedAddFloat.cginc" />
      <None Include="Assets\Resources\BasicLineConnector.shader" />
@@ -82,15 +85,22 @@
      <None Include="Assets\Resources\BasicComputeShader.compute" />
      <None Include="Assets\Resources\Chunks\calcIntersection.cginc" />
      <None Include="Assets\Resources\Chunks\uvNormalMap.cginc" />
+     <None Include="Assets\Shaders\DepthNoise.shader" />
      <None Include="Assets\Resources\Chunks\interlockedAddFloat4.cginc" />
+     <None Include="Assets\Shaders\Cloud.shader" />
      <None Include="Assets\Resources\Chunks\handForce.cginc" />
+     <None Include="Assets\Shaders\VolumetricBasic.shader" />
      <None Include="Assets\Resources\Chunks\tex3D.cginc" />
      <None Include="Assets\Resources\Chunks\noise.cginc" />
+     <None Include="Assets\Shaders\VolumeCombo.shader" />
      <None Include="Assets\Gooui\Resources\shaders\chunks\buttonVertStuff.cginc" />
+     <None Include="Assets\Shaders\VolumetricNoise1.shader" />
+     <None Include="Assets\Shaders\VolumeHolo.shader" />
      <None Include="Assets\Resources\Chunks\hsv.cginc" />
      <None Include="Assets\Resources\BasicGatherShader.compute" />
      <None Include="Assets\SteamVR\Resources\SteamVR_SphericalProjection.shader" />
      <None Include="Assets\SteamVR\Resources\SteamVR_AlphaOut.shader" />
+     <None Include="Assets\Shaders\DepthNoiseNeow2.shader" />
      <None Include="Assets\SteamVR\readme.txt" />
      <None Include="Assets\Resources\Chunks\calcNormal.cginc" />
      <None Include="Assets\SteamVR\InteractionSystem\Core\Shaders\Silhouette.shader" />
@@ -100,6 +110,7 @@
      <None Include="Assets\Resources\InsideCubeCompute.compute" />
      <None Include="Assets\Resources\Chunks\sdfFunctions.cginc" />
      <None Include="Assets\Resources\Chunks\interlockedClosestLength.cginc" />
+     <None Include="Assets\Shaders\CloudCutoff.shader" />
      <None Include="Assets\SteamVR\InteractionSystem\Readme_InteractionSystem.txt" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
